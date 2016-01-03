@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Kontur food rater",
+  "description": "Allows to give a personal rating to dishes at cafe.skbkontur.ru",
+  "version": "0.0.1",
+
+  "page_action": {
+    "default_icon": "icon.ico",
+    "default_popup": "popup.html",
+    "default_title": "Click here!"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://cafe.skbkontur.ru/*"],
+      "js": ["content.js"]
+    }
+  ],
+
+  "background": {
+    "scripts": ["background.js"]
+  },
+
+  "permissions": [
+    "activeTab",
+    "https://cafe.skbkontur.ru",
+    "tabs",
+    "webNavigation"
+  ]
+}
