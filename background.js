@@ -1,13 +1,7 @@
-//document.addEventListener('DOMContentLoaded', function () {
-//    var names = document.getElementsByClassName('menuitemname');
-//    for (var i = 0, len = names.length; i < len; i++) {
-//        names[i].style.color = 'red';
-//    }
-//});
+// Show page action icon in omnibar.
+function showPageAction(tabId, changeInfo, tab) {
+  chrome.pageAction.show(tabId);
+}
 
-
-//document.addEventListener('DOMContentLoaded', function () {
-    chrome.tabs.getCurrent(function(tab){
-        chrome.pageAction.show(tab.id);
-    })
-//});
+// Call the above function when the url of a tab changes.
+chrome.tabs.onUpdated.addListener(showPageAction);
