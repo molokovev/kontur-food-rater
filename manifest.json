@@ -3,9 +3,12 @@
   "name": "Kontur food rater",
   "description": "Allows to give a personal rating to dishes at https://cafe.skbkontur.ru",
   "version": "0.1.0",
-  "page_action": {
-    "default_icon": "icon.png",
-    "default_title": "Kontur food rater"
+
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "background.js"
+    ]
   },
   "content_scripts": [
     {
@@ -20,11 +23,14 @@
       ]
     }
   ],
-  "background": {
-    "persistent": false,
-    "scripts": [
-      "background.js"
-    ]
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "page_action": {
+    "default_icon": "icon.png",
+    "default_title": "Kontur food rater"
   },
   "permissions": [
     "https://cafe.skbkontur.ru/",
