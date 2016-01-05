@@ -1,33 +1,80 @@
-var target = document.querySelector('#CateringWebPart_UpdatePanel3');
+var observer = {
+  config: {
+    childList: true
+  },
 
-var observer = new MutationObserver(function (mutations) {
+  instance: new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === 'childList') {
+        dom.refresh();
+      }
+    });
+  }),
+};
 
-  mutations.forEach(function (mutation) {
-    if (mutation.type === 'childList') {
-      refresh();
+var dom = {
+  addRateBlocks: function () {
+    var names = document.getElementsByClassName('menuitemname');
+
+    for (var i = 0, len = names.length; i < len; i++) {
+      dom.appendRateBlockTo(names[i]);
     }
-  });
-});
+  },
 
-function refresh() {
-  var names = document.getElementsByClassName('menuitemname');
+  appendRateBlockTo: function (node) {
+    node.parentNode.style.position = 'relative';
 
-  for (var i = 0, len = names.length; i < len; i++) {
-    appendStarTo(names[i]);
-  }
-}
+    var name = node.textContent;
+    var rateBlock = dom.createRateBlock(name);
+    node.parentNode.appendChild(rateBlock);
+  },
 
-function appendStarTo(node) {
-  node.style.position = 'relative';
-  var star = document.createElement('div');
-  star.setAttribute('class', 'star');
-  node.appendChild(star);
-}
+  createRateBlock: function (name) {
+    var input = document.createElement('input');
+    input.setAttribute('class', 'rating');
+    input.setAttribute('type', 'number');
+    input.setAttribute('min', '0');
+    input.setAttribute('max', '5');
 
+    input.addEventListener('change', function () {
+      store.setRate(name, this.value);
+    });
 
-var config = {childList: true};
+    input.value = store.getRate(name) !== '0' ? store.getRate(name) : '';
 
-observer.observe(target, config);
+    return input;
+  },
 
-refresh();
+  observerTarget: document.querySelector('#CateringWebPart_UpdatePanel3'),
 
+  refresh: function () {
+    store.getSavedObj()
+      .then(function () {
+        dom.addRateBlocks();
+      });
+  },
+};
+
+var store = {
+  clean: function () {
+    chrome.storage.sync.set({'konturFoodRater': {}});
+  },
+  getRate: function (name) {
+    return store.obj[name];
+  },
+  getSavedObj: function () {
+    return new Promise(function (resolve, reject) {
+      chrome.storage.sync.get('konturFoodRater', function (items) {
+        resolve((store.obj = items['konturFoodRater']) || {});
+      });
+    });
+  },
+  obj: {},
+  setRate: function (name, val) {
+    store.obj[name] = val;
+    chrome.storage.sync.set({'konturFoodRater': store.obj});
+  },
+};
+
+observer.instance.observe(dom.observerTarget, observer.config);
+dom.refresh();

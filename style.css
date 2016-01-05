@@ -1,8 +1,6 @@
-.star {
-    background: #000;
-    height: 20px;
+.rating {
+    padding: 0;
     position: absolute;
-    right: -50px;
+    right: 0;
     top: 0;
-    width: 20px;
 }
