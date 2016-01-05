@@ -57,7 +57,7 @@ var dom = {
 
 var store = {
   clean: function () {
-    chrome.storage.sync.set({'konturFoodRater': {}});
+    chrome.storage.sync.remove(['konturFoodRater']);
   },
   getRate: function (name) {
     return store.obj[name];
@@ -65,7 +65,7 @@ var store = {
   getSavedObj: function () {
     return new Promise(function (resolve, reject) {
       chrome.storage.sync.get('konturFoodRater', function (items) {
-        resolve((store.obj = items['konturFoodRater']) || {});
+        resolve(store.obj = items['konturFoodRater'] || {});
       });
     });
   },
