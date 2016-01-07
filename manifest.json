@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Kontur food rater",
   "description": "Allows to give a personal rating to dishes at https://cafe.skbkontur.ru",
-  "version": "0.1.1",
+  "version": "0.1.2",
 
   "background": {
     "persistent": false,
@@ -30,7 +30,8 @@
   },
   "page_action": {
     "default_icon": "img/icon32.png",
-    "default_title": "Kontur food rater"
+    "default_title": "Kontur food rater",
+    "default_popup": "popup.html"
   },
   "permissions": [
     "https://cafe.skbkontur.ru/",
