@@ -57,22 +57,23 @@ var dom = {
 
 var store = {
   clean: function () {
-    chrome.storage.sync.remove(['konturFoodRater']);
+    chrome.storage.sync.remove([store.keyName]);
   },
   getRate: function (name) {
     return store.obj[name];
   },
   getSavedObj: function () {
     return new Promise(function (resolve, reject) {
-      chrome.storage.sync.get('konturFoodRater', function (items) {
-        resolve(store.obj = items['konturFoodRater'] || {});
+      chrome.storage.sync.get(store.keyName, function (items) {
+        resolve(store.obj = items[store.keyName] || {});
       });
     });
   },
+  keyName: 'konturFoodRater',
   obj: {},
   setRate: function (name, val) {
     store.obj[name] = val;
-    chrome.storage.sync.set({'konturFoodRater': store.obj});
+    chrome.storage.sync.set({[store.keyName]: store.obj});
   },
 };
 
