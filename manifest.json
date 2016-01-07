@@ -24,12 +24,12 @@
     }
   ],
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
   },
   "page_action": {
-    "default_icon": "icon.png",
+    "default_icon": "img/icon32.png",
     "default_title": "Kontur food rater"
   },
   "permissions": [
