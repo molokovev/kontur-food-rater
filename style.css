@@ -1,6 +1,38 @@
-.rating {
+.stars {
+    font-size: 0;
+    overflow: hidden;
     padding: 0;
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.stars input {
+    cursor: pointer;
+    float: right;
+    height: 17px;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    visibility: hidden;
+    width: 17px;
+}
+
+.stars input:before {
+    color: #ccc;
+    content: '\2605';
+    display: inline-block;
+    font-size: 20px;
+    height: 17px;
+    line-height: 17px;
+    position: absolute;
+    visibility: visible;
+    width: 17px;
+}
+
+.stars input:hover:before,
+.stars input:hover ~ input:before,
+.stars input:checked:before,
+.stars input:checked ~ input:before {
+    color: #ffcc00;
 }

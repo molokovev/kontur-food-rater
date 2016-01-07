@@ -30,19 +30,29 @@ var dom = {
   },
 
   createRateBlock: function (name) {
-    var input = document.createElement('input');
-    input.setAttribute('class', 'rating');
-    input.setAttribute('type', 'number');
-    input.setAttribute('min', '0');
-    input.setAttribute('max', '5');
+    var wrap = document.createElement('div');
+    wrap.setAttribute('class', 'stars');
 
-    input.addEventListener('change', function () {
-      store.setRate(name, this.value);
-    });
+    var savedValue = store.getRate(name);
+    var randGroupName = Math.random().toString();
 
-    input.value = store.getRate(name) !== '0' ? store.getRate(name) : '';
+    for (var i = 5; i > 0; i -= 1) {
+      var input = document.createElement('input');
+      input.setAttribute('type', 'radio');
+      input.setAttribute('name', randGroupName);
+      input.setAttribute('value', i.toString());
+      if (savedValue == i) {
+        input.checked = true;
+      }
 
-    return input;
+      input.addEventListener('change', function () {
+        store.setRate(name, this.value);
+      });
+
+      wrap.appendChild(input);
+    }
+
+    return wrap;
   },
 
   observerTarget: document.querySelector('#CateringWebPart_UpdatePanel3'),
