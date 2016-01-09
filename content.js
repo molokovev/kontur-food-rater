@@ -14,6 +14,7 @@ var observer = {
 
 var dom = {
   addRateBlocks: function () {
+    dom.removeOldRateBlocks();
     var names = document.getElementsByClassName('menuitemname');
 
     for (var i = 0, len = names.length; i < len; i++) {
@@ -55,13 +56,18 @@ var dom = {
     return wrap;
   },
 
-  observerTarget: document.querySelector('#CateringWebPart_UpdatePanel3'),
-
   refresh: function () {
     store.getSavedObj()
       .then(function () {
         dom.addRateBlocks();
       });
+  },
+
+  removeOldRateBlocks: function() {
+    var oldRateBlocks = document.getElementsByClassName('stars');
+    for (var i = 0; i < oldRateBlocks.length; i+=1) {
+      oldRateBlocks[i].remove();
+    }
   },
 };
 
@@ -87,12 +93,12 @@ var store = {
   },
 };
 
-observer.instance.observe(dom.observerTarget, observer.config);
+observer.instance.observe(document, observer.config);
 dom.refresh();
 
 chrome.runtime.onMessage.addListener(
   function (request) {
-    if (request === "reload") {
-      window.location.reload();
+    if (request === "refresh") {
+      dom.refresh();
     }
   });

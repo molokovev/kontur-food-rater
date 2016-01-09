@@ -13,7 +13,7 @@
   "content_scripts": [
     {
       "css": [
-        "style.css"
+        "content.css"
       ],
       "js": [
         "content.js"
