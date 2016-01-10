@@ -63,9 +63,9 @@ var dom = {
       });
   },
 
-  removeOldRateBlocks: function() {
+  removeOldRateBlocks: function () {
     var oldRateBlocks = document.getElementsByClassName('stars');
-    for (var i = 0; i < oldRateBlocks.length; i+=1) {
+    for (var i = 0; i < oldRateBlocks.length; i += 1) {
       oldRateBlocks[i].remove();
     }
   },
@@ -90,6 +90,7 @@ var store = {
   setRate: function (name, val) {
     store.obj[name] = val;
     chrome.storage.sync.set({[store.keyName]: store.obj});
+    chrome.runtime.sendMessage({event: 'SetRate', name: name, value: val});
   },
 };
 

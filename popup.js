@@ -2,6 +2,7 @@ var store = {
   clean: function () {
     return new Promise(function (resolve, reject) {
       chrome.storage.sync.remove([store.keyName], function () {
+        chrome.runtime.sendMessage({event: 'ClearAll'});
         resolve();
       });
     });
@@ -25,6 +26,7 @@ var store = {
   removeItemRating: function (key) {
     delete store.obj[key];
     store.save();
+    chrome.runtime.sendMessage({event: 'ResetRate', name: key});
   },
   save: function () {
     chrome.storage.sync.set({[store.keyName]: store.obj});
@@ -94,3 +96,5 @@ document.getElementById('clearAll').addEventListener('click', function (e) {
       window.close();
     });
 });
+
+chrome.runtime.sendMessage({event: 'OpenPopup'});

@@ -3,12 +3,9 @@
   "name": "Kontur food rater",
   "description": "Allows to give a personal rating to dishes at https://cafe.skbkontur.ru",
   "version": "0.1.2",
-
   "background": {
     "persistent": false,
-    "scripts": [
-      "background.js"
-    ]
+    "page": "background.html"
   },
   "content_scripts": [
     {
@@ -37,5 +34,6 @@
     "https://cafe.skbkontur.ru/",
     "storage",
     "tabs"
-  ]
+  ],
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'"
 }

@@ -5,3 +5,22 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
     chrome.pageAction.show(tabId);
   }
 });
+
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    switch (request.event) {
+      case 'ClearAll':
+        _gaq.push(['_trackEvent', 'Rate', 'ClearAll']);
+        break;
+      case 'OpenPopup':
+        _gaq.push(['_trackEvent', 'Popup', 'open']);
+        break;
+      case 'ResetRate':
+        _gaq.push(['_trackEvent', 'Rate', 'Clear', request.name]);
+        break;
+      case 'SetRate':
+        _gaq.push(['_trackEvent', 'Rate', request.value + ' stars', request.name]);
+        break;
+      default:
+    }
+  });
