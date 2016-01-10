@@ -56,6 +56,8 @@ var dom = {
     return wrap;
   },
 
+  observerTarget: document.getElementById('form1'),
+
   refresh: function () {
     store.getSavedObj()
       .then(function () {
@@ -94,7 +96,7 @@ var store = {
   },
 };
 
-observer.instance.observe(document, observer.config);
+observer.instance.observe(dom.observerTarget, observer.config);
 dom.refresh();
 
 chrome.runtime.onMessage.addListener(
