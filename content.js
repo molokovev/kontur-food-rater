@@ -73,9 +73,6 @@ var dom = {
 };
 
 var store = {
-  clean: function () {
-    chrome.storage.sync.remove([store.keyName]);
-  },
   getRate: function (name) {
     return store.obj[name];
   },
@@ -93,10 +90,12 @@ var store = {
         if (!changes.konturFoodRater.newValue ||
             !changes.konturFoodRater.newValue[name]) {
               input.checked = false;
-              return;
+              delete store.obj[name];
+              return;obj
             }
         if (changes.konturFoodRater.newValue[name] === input.value) {
           input.checked = true;
+          store.obj[name] = input.value;
         }
       }
     });
