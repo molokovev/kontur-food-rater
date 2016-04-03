@@ -110,10 +110,3 @@ var store = {
 
 observer.instance.observe(dom.observerTarget, observer.config);
 dom.refresh();
-
-chrome.runtime.onMessage.addListener(
-  function (request) {
-    if (request === "refresh") {
-      dom.refresh();
-    }
-  });

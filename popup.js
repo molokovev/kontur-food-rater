@@ -54,7 +54,6 @@ var dom = {
       e.preventDefault();
       store.removeItemRating(key);
       row.remove();
-      contentPage.refresh();
     });
     removeCell.appendChild(link);
     row.appendChild(removeCell);
@@ -71,16 +70,6 @@ var dom = {
   },
 };
 
-var contentPage = {
-  refresh: function() {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id, 'refresh', function (response) {
-        console.log(response.farewell);
-      });
-    });
-  },
-};
-
 store.getSavedObj()
   .then(function (obj) {
     store.copyAndSort(obj);
@@ -92,7 +81,6 @@ document.getElementById('clearAll').addEventListener('click', function (e) {
 
   store.clean()
     .then(function () {
-      contentPage.refresh();
       window.close();
     });
 });
