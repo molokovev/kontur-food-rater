@@ -14,7 +14,6 @@ var observer = {
 
 var dom = {
   addRateBlocks: function () {
-    dom.removeOldRateBlocks();
     var names = document.getElementsByClassName('menuitemname');
 
     for (var i = 0, len = names.length; i < len; i++) {
@@ -28,6 +27,10 @@ var dom = {
     var name = node.textContent;
     var rateBlock = dom.createRateBlock(name);
     node.parentNode.appendChild(rateBlock);
+  },
+
+  blocksAlreadyAdded: function () {
+    return document.getElementsByClassName('stars').length;
   },
 
   createRateBlock: function (name) {
@@ -62,15 +65,10 @@ var dom = {
   refresh: function () {
     store.getSavedObj()
       .then(function () {
-        dom.addRateBlocks();
+        if (!dom.blocksAlreadyAdded()) {
+          dom.addRateBlocks();
+        }
       });
-  },
-
-  removeOldRateBlocks: function () {
-    var oldRateBlocks = document.getElementsByClassName('stars');
-    for (var i = 0; i < oldRateBlocks.length; i += 1) {
-      oldRateBlocks[i].remove();
-    }
   },
 };
 
