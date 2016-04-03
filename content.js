@@ -37,8 +37,8 @@ var dom = {
     var savedValue = store.getRate(name);
     var randGroupName = Math.random().toString();
 
-    for (var i = 5; i > 0; i -= 1) {
-      var input = document.createElement('input');
+    for (let i = 5; i > 0; i -= 1) {
+      let input = document.createElement('input');
       input.setAttribute('type', 'radio');
       input.setAttribute('name', randGroupName);
       input.setAttribute('value', i.toString());
@@ -49,6 +49,7 @@ var dom = {
       input.addEventListener('change', function () {
         store.setRate(name, this.value);
       });
+      store.listenRateChange(name, input);
 
       wrap.appendChild(input);
     }
@@ -88,6 +89,20 @@ var store = {
     });
   },
   keyName: 'konturFoodRater',
+  listenRateChange: function (name, input) {
+    chrome.storage.onChanged.addListener(function(changes, areaName) {
+      if (changes.konturFoodRater) {
+        if (!changes.konturFoodRater.newValue ||
+            !changes.konturFoodRater.newValue[name]) {
+              input.checked = false;
+              return;
+            }
+        if (changes.konturFoodRater.newValue[name] === input.value) {
+          input.checked = true;
+        }
+      }
+    });
+  },
   obj: {},
   setRate: function (name, val) {
     store.obj[name] = val;
