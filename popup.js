@@ -1,7 +1,7 @@
 var store = {
   clean: function () {
     return new Promise(function (resolve, reject) {
-      chrome.storage.sync.remove([store.keyName], function () {
+      chrome.storage.sync.remove(Object.keys(store.obj), function () {
         chrome.runtime.sendMessage({event: 'ClearAll'});
         resolve();
       });
@@ -16,8 +16,15 @@ var store = {
   },
   getSavedObj: function () {
     return new Promise(function (resolve, reject) {
-      chrome.storage.sync.get(store.keyName, function (items) {
-        resolve(store.obj = items[store.keyName] || {});
+      chrome.storage.sync.get(null, function (items) {
+        // for old storing scheme
+        if (items[store.keyName]) {
+          store.obj = items[store.keyName];
+          chrome.storage.sync.remove(store.keyName);
+        } else {
+          store.obj =  items || {};
+        }
+        resolve(store.obj);
       });
     });
   },
@@ -25,11 +32,8 @@ var store = {
   keyName: 'konturFoodRater',
   removeItemRating: function (key) {
     delete store.obj[key];
-    store.save();
+    chrome.storage.sync.remove(key);
     chrome.runtime.sendMessage({event: 'ResetRate', name: key});
-  },
-  save: function () {
-    chrome.storage.sync.set({[store.keyName]: store.obj});
   },
   sortedArray: [],
 };

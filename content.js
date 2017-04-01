@@ -78,32 +78,39 @@ var store = {
   },
   getSavedObj: function () {
     return new Promise(function (resolve, reject) {
-      chrome.storage.sync.get(store.keyName, function (items) {
-        resolve(store.obj = items[store.keyName] || {});
+      chrome.storage.sync.get(null, function (items) {
+        // for old storing scheme
+        if (items[store.keyName]) {
+          store.obj = items[store.keyName];
+          chrome.storage.sync.remove(store.keyName);
+        } else {
+          store.obj =  items || {};
+        }
+        resolve();
       });
     });
   },
   keyName: 'konturFoodRater',
   listenRateChange: function (name, input) {
     chrome.storage.onChanged.addListener(function(changes, areaName) {
-      if (changes.konturFoodRater) {
-        if (!changes.konturFoodRater.newValue ||
-            !changes.konturFoodRater.newValue[name]) {
-              input.checked = false;
-              delete store.obj[name];
-              return;obj
-            }
-        if (changes.konturFoodRater.newValue[name] === input.value) {
-          input.checked = true;
-          store.obj[name] = input.value;
-        }
+      if (!changes[name]) return;
+
+      if (changes[name].newValue === input.value) {
+        input.checked = true;
+        store.obj[name] = changes[name].newValue;
+      }
+
+      if (changes[name] && !changes[name].newValue) {
+        input.checked = false;
+        delete store.obj[name];
+        return;
       }
     });
   },
   obj: {},
   setRate: function (name, val) {
     store.obj[name] = val;
-    chrome.storage.sync.set({[store.keyName]: store.obj});
+    chrome.storage.sync.set({[name]: val});
     chrome.runtime.sendMessage({event: 'SetRate', name: name, value: val});
   },
 };
