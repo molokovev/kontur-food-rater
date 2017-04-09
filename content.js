@@ -82,6 +82,7 @@ var store = {
         // for old storing scheme
         if (items[store.keyName]) {
           store.obj = items[store.keyName];
+          chrome.storage.sync.set(store.obj);
           chrome.storage.sync.remove(store.keyName);
         } else {
           store.obj =  items || {};
